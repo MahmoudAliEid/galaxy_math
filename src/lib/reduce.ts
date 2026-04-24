@@ -17,11 +17,29 @@ export function digitalRoot(val: bigint | string): ReductionResult {
   const steps: string[] = [currentValStr];
 
   while (currentValStr.length > 1) {
-    const sum = currentValStr.split('').reduce((acc, digit) => {
-      return acc + BigInt(digit);
-    }, BigInt(0));
+    // 1. Remove zeros from the number
+    let strippedStr = currentValStr.replace(/0/g, '');
+    
+    // If zeros were removed, record the step
+    if (strippedStr !== currentValStr) {
+      if (strippedStr === '') {
+        strippedStr = '0';
+      }
+      currentValStr = strippedStr;
+      steps.push(currentValStr);
+    }
+    
+    // If we're down to a single digit, stop
+    if (currentValStr.length <= 1) {
+      break;
+    }
 
-    currentValStr = sum.toString();
+    // 2. Multiply all digits together using Arbitrary-precision Arithmetic (BigInt)
+    const product = currentValStr.split('').reduce((acc, digit) => {
+      return acc * BigInt(digit);
+    }, BigInt(1));
+
+    currentValStr = product.toString();
     steps.push(currentValStr);
   }
 
