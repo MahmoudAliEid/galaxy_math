@@ -4,17 +4,17 @@
 
 // Normalization map for Arabic characters based on requested groups
 export const NORMALIZATION_MAP: Record<string, string> = {
-  // Alif/Hamza Group normalize all to 'ا'
-  'أ': 'ا',
-  'إ': 'ا',
-  'آ': 'ا',
-  'ى': 'ا',
-  'ء': 'ا',
-  'ؤ': 'ا',
-  'ئ': 'ا',
-  'ٱ': 'ا',
+  // Alif/Hamza Group normalize all to 'أ'
+  'ا': 'أ',
+  'إ': 'أ',
+  'آ': 'أ',
+  'ى': 'أ',
+  'ء': 'أ',
+  'ؤ': 'أ',
+  'ئ': 'أ',
+  'ٱ': 'أ',
   // Presentation forms for Alif group
-  'ﺁ': 'ا', 'ﺂ': 'ا', 'ﺃ': 'ا', 'ﺄ': 'ا', 'ﺅ': 'ا', 'ﺆ': 'ا', 'ﺇ': 'ا', 'ﺈ': 'ا', 'ﺉ': 'ا', 'ﺌ': 'ا', 'ﺋ': 'ا', 'ﺊ': 'ا', 'ﺍ': 'ا', 'ﺎ': 'ا', 'ﻰ': 'ا', 'ﻯ': 'ا',
+  'ﺁ': 'أ', 'ﺂ': 'أ', 'ﺃ': 'أ', 'ﺄ': 'أ', 'ﺅ': 'أ', 'ﺆ': 'أ', 'ﺇ': 'أ', 'ﺈ': 'أ', 'ﺉ': 'أ', 'ﺌ': 'أ', 'ﺋ': 'أ', 'ﺊ': 'أ', 'ﺍ': 'أ', 'ﺎ': 'أ', 'ﻰ': 'أ', 'ﻯ': 'أ',
   
   // Ta Group normalize all to 'ت'
   'ة': 'ت',

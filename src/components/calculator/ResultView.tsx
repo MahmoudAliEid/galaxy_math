@@ -40,15 +40,13 @@ export default function ResultView({ result }: ResultViewProps) {
                 <div className="space-y-4">
                     <div className="flex items-center gap-3 px-2">
                         <Sparkles className="w-5 h-5 text-yellow-500" />
-                        <h3 className="text-lg font-bold tracking-tight">مسار الاختزال العلمي (ضرب الأرقام)</h3>
+                        <h3 className="text-lg font-bold tracking-tight">مسار الاختزال النهائي (جمع الأرقام)</h3>
                     </div>
                     
                     <Card className="glass border-white/5 overflow-hidden">
                         <CardContent className="p-6">
                             <div className="flex flex-col gap-6 relative">
                                 {result.reductionSteps.map((step, i) => {
-                                    const nextStep = result.reductionSteps[i + 1];
-                                    const isZeroStripping = nextStep && step.includes('0') && step.replace(/0/g, '') === nextStep;
                                     const isLast = i === result.reductionSteps.length - 1;
 
                                     return (
@@ -57,18 +55,13 @@ export default function ResultView({ result }: ResultViewProps) {
                                                 <div className={`text-4xl font-black tracking-widest break-all text-center px-4 ${isLast ? 'text-sky-400 scale-125' : 'text-slate-200'}`}>
                                                     {step}
                                                 </div>
-                                                {isZeroStripping && (
-                                                    <div className="absolute inset-0 flex items-center justify-center opacity-30 select-none pointer-events-none">
-                                                        <div className="w-full h-1 bg-red-500/50 -rotate-6" />
-                                                    </div>
-                                                )}
                                             </div>
 
                                             {!isLast && (
                                                 <div className="flex flex-col items-center gap-2 text-slate-500">
                                                     <ChevronRight className="w-5 h-5 rotate-90" />
                                                     <span className="text-[0.6rem] font-black uppercase tracking-widest opacity-50">
-                                                        {isZeroStripping ? 'حذف الأصفار' : 'ضرب المكونات'}
+                                                        جمع المكونات
                                                     </span>
                                                 </div>
                                             )}
@@ -82,12 +75,12 @@ export default function ResultView({ result }: ResultViewProps) {
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Multiplication Sequence */}
+                {/* Character Value Analysis */}
                 <Card className="glass border-white/5 md:col-span-2 overflow-hidden">
                     <CardHeader className="pb-2">
                         <CardTitle className="text-sm font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
                             <BarChart3 className="w-4 h-4 text-emerald-400" />
-                            قيم المجموع النهائي لكل حرف (المرحلة الثانية)
+                            قيم كل حرف (المرحلة الثانية)
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="pb-6 border-b border-white/5">
@@ -96,7 +89,7 @@ export default function ResultView({ result }: ResultViewProps) {
                                 <div key={i} className="flex items-center gap-2 bg-white/5 p-2 px-4 rounded-xl border border-white/5">
                                     <span className="text-2xl font-black text-white">{analysis.char}</span>
                                     <span className="text-xs text-slate-500">=</span>
-                                    <span className="text-xl font-black text-sky-400">{analysis.groupSum}</span>
+                                    <span className="text-xl font-black text-sky-400 break-all">{analysis.charValue}</span>
                                 </div>
                             ))}
                         </div>
@@ -105,28 +98,30 @@ export default function ResultView({ result }: ResultViewProps) {
                     <CardHeader className="pb-2 pt-6">
                         <CardTitle className="text-sm font-black text-slate-500 uppercase tracking-widest flex items-center gap-2">
                             <Calculator className="w-4 h-4 text-emerald-400" />
-                            تفكيك متسلسلة الضرب (المرحلة الثالثة)
+                            تفكيك متسلسلة الجمع (المرحلة الثالثة)
                         </CardTitle>
                     </CardHeader>
 
                     <CardContent>
-                        <div className="flex flex-wrap justify-center items-center gap-2 p-6 bg-white/[0.02] rounded-2xl border border-white/5 min-h-[100px]">
+                        <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-8 p-6 bg-white/[0.02] rounded-2xl border border-white/5 min-h-[100px] relative">
                             {result.sequence.map((step, i) => (
-                                <div key={i} className="flex flex-col items-center gap-1 group">
-                                    <span className="text-xs font-bold text-slate-600 group-hover:text-sky-500 transition-colors">{step.char}</span>
-                                    <div className="w-10 h-10 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 font-bold text-sm shadow-inner group-hover:scale-110 transition-transform">
-                                        {step.groupSum}
+                                <div key={i} className="flex items-center gap-2">
+                                    <div className="flex flex-col items-center gap-1 group">
+                                        <span className="text-xs font-bold text-slate-600 group-hover:text-sky-500 transition-colors">{step.char}</span>
+                                        <div className="px-3 h-10 min-w-10 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center text-sky-400 font-bold text-sm shadow-inner group-hover:scale-110 transition-transform">
+                                            {step.value}
+                                        </div>
                                     </div>
                                     {i < result.sequence.length - 1 && (
-                                        <div className="absolute -right-2 top-10 text-slate-700 font-black text-xs">×</div>
+                                        <div className="text-slate-700 font-black text-lg self-end pb-2">+</div>
                                     )}
                                 </div>
                             ))}
                         </div>
                         <div className="mt-4 flex flex-col items-center gap-2 w-full">
-                            <span className="text-[0.6rem] font-black text-slate-600 uppercase tracking-widest">ناتج الضرب الأولي / الناتج الصحيح</span>
+                            <span className="text-[0.6rem] font-black text-slate-600 uppercase tracking-widest">المجموع الكلي</span>
                             <div className="text-xl font-black text-white bg-white/5 px-6 py-2 rounded-2xl border border-white/5 max-w-full break-all text-center">
-                                {result.step4Product}
+                                {result.totalSum}
                             </div>
                         </div>
                     </CardContent>
@@ -138,7 +133,7 @@ export default function ResultView({ result }: ResultViewProps) {
                         <div className="space-y-1">
                             <CardTitle className="text-sm font-bold text-slate-300 uppercase tracking-widest flex items-center gap-2">
                                 <FileText className="w-4 h-4 text-blue-400" />
-                                النص المفكك
+                                النص الموحد
                             </CardTitle>
                         </div>
                         <div className="w-2 h-2 rounded-full bg-blue-500" />
@@ -166,7 +161,7 @@ export default function ResultView({ result }: ResultViewProps) {
                     <CardContent className="space-y-3">
                         {[
                             { label: 'النص الأصلي', value: result.original, color: 'text-slate-300', rtl: true },
-                            { label: 'إجمالي عدد الحروف', value: result.step3Total, color: 'text-sky-400', rtl: false },
+                            { label: 'إجمالي عدد الحروف', value: result.normalized.length, color: 'text-sky-400', rtl: false },
                             { label: 'القيمة النهائية', value: result.finalReduced, color: 'text-white font-black text-xl', rtl: false },
                         ].map((item, i) => (
                             <div key={i} className="flex justify-between items-center p-3 rounded-xl bg-white/[0.02] border border-white/5">
@@ -182,7 +177,7 @@ export default function ResultView({ result }: ResultViewProps) {
             <div className="space-y-4">
                 <div className="flex items-center gap-3 px-2">
                     <BarChart3 className="w-5 h-5 text-teal-500" />
-                    <h3 className="text-lg font-bold tracking-tight">تحليل الجذور الحرفية (النظام الجديد)</h3>
+                    <h3 className="text-lg font-bold tracking-tight">تحليل الحروف (الخوارزمية المحددة)</h3>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -197,28 +192,21 @@ export default function ResultView({ result }: ResultViewProps) {
                                         {analysis.char}
                                     </span>
                                     <div className="text-right">
-                                        <span className="block text-2xl font-black text-sky-400">{analysis.groupSum}</span>
-                                        <span className="text-[0.6rem] font-bold text-slate-600 uppercase">مجموع المجموعة</span>
+                                        <span className="block text-2xl font-black text-sky-400 break-all">{analysis.charValue}</span>
+                                        <span className="text-[0.6rem] font-bold text-slate-600 uppercase">قيمة الحرف</span>
                                     </div>
                                 </div>
 
                                 <div className="space-y-2 pt-2 border-t border-white/5">
                                     <div className="flex justify-between text-[0.65rem] font-bold">
-                                        <span className="text-slate-500">المواضع</span>
-                                        <span className="text-teal-400 font-mono italic">{analysis.positions.join(' ، ')}</span>
+                                        <span className="text-slate-500">المواضع (الأرقام التسلسلية)</span>
+                                        <span className="text-teal-400 font-mono italic">{analysis.positions.join(' × ')}</span>
                                     </div>
                                     <div className="pt-2">
-                                        <span className="text-[0.65rem] font-bold text-slate-500 block mb-1">الموضع في متسلسلة الضرب:</span>
-                                        <div className="space-y-1">
-                                            {analysis.step3Results.map((r, i) => (
-                                                <div key={i} className="flex justify-between text-[0.7rem] bg-white/[0.03] p-1 px-2 rounded">
-                                                    <span className="text-slate-400">موضع رقم {r.position}</span>
-                                                    <span className="text-lime-400 font-bold">{r.result}</span>
-                                                </div>
-                                            ))}
-                                        </div>
+                                        <p className="text-[0.6rem] text-slate-500 leading-relaxed italic">
+                                            تم حساب القيمة بضرب جميع الأرقام التسلسلية للمواضع التي ظهر فيها الحرف.
+                                        </p>
                                     </div>
-
                                 </div>
                             </CardContent>
                         </Card>
