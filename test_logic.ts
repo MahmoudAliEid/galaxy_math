@@ -11,8 +11,8 @@ tests.forEach(({ text, expected }) => {
     try {
         const result = calculateArabicPower(text);
         console.log(`Input: ${text}`);
-        console.log(`Sequence: ${result.sequence.map(s => s.groupSum).join(' * ')}`);
-        console.log(`Product: ${result.step4Product}`);
+        console.log(`Sequence: ${result.sequence.map(s => s.value).join(' + ')}`);
+        console.log(`Total Sum: ${result.totalSum}`);
         console.log(`Reduction Steps: ${result.reductionSteps.join(' -> ')}`);
         console.log(`Final Result: ${result.finalReduced} (Expected: ${expected})`);
         console.log('---');
